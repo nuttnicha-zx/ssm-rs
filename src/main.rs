@@ -1,6 +1,37 @@
+use std::env::consts::OS;
+use std::fs;
 use std::thread::sleep;
 use std::time::Duration;
 use sysinfo::System;
+
+/// Detect the Linux distribution name
+fn get_os_name() -> String {
+    // Try to read /etc/os-release first (preferred method)
+    if let Ok(content) = fs::read_to_string("/etc/os-release") {
+        for line in content.lines() {
+            if line.starts_with("PRETTY_NAME=") {
+                // Extract the value between quotes
+                if let Some(value) = line.split('=').nth(1) {
+                    return value.trim_matches('"').to_string();
+                }
+            }
+        }
+    }
+
+    // Fallback to /etc/lsb-release
+    if let Ok(content) = fs::read_to_string("/etc/lsb-release") {
+        for line in content.lines() {
+            if line.starts_with("DISTRIB_DESCRIPTION=") {
+                if let Some(value) = line.split('=').nth(1) {
+                    return value.trim_matches('"').to_string();
+                }
+            }
+        }
+    }
+
+    // Default fallback
+    OS.to_string()
+}
 
 fn main() {
     let mut sys = System::new_all();
@@ -26,6 +57,7 @@ fn main() {
         print!("\x1B[2J\x1B[1;1H");
 
         // Print system information
+        println!("OS: {}", get_os_name());
         println!("CPU usage: {:.0}%", cpu_usage);
         println!("Memory: {} MiB / {} MiB", used_memory, total_memory);
         println!("Swap: {} MiB / {} MiB", used_swap, total_swap);
