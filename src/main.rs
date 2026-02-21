@@ -4,6 +4,11 @@ use std::thread::sleep;
 use std::time::Duration;
 use sysinfo::System;
 
+/// Clear terminal screen
+fn clear_screen() {
+    print!("\x1B[2J\x1B[1;1H");
+}
+
 /// Detect the Linux distribution name
 fn get_os_name() -> String {
     // Try to read /etc/os-release first (preferred method)
@@ -33,7 +38,7 @@ fn get_os_name() -> String {
     OS.to_string()
 }
 
-// Get memory usage information
+/// Get memory usage information
 fn get_memory_usage() -> String {
     let mut sys = System::new_all();
     sys.refresh_all();
@@ -48,7 +53,7 @@ fn get_memory_usage() -> String {
     format!("Memory Usage: {}/{} MB", used_memory, total_memory)
 }
 
-// Get swap usage information
+/// Get swap usage information
 fn get_swap_usage() -> String {
     let mut sys = System::new_all();
     sys.refresh_all();
@@ -74,10 +79,8 @@ fn main() {
         // Get CPU usage
         let cpu_usage = sys.global_cpu_usage();
 
-        // Clear the terminal screen
-        print!("\x1B[2J\x1B[1;1H");
-
         // Print system information
+        clear_screen();
         println!("OS: {}", get_os_name());
         println!("CPU usage: {:.0}%", cpu_usage);
         println!("Memory: {}", get_memory_usage());
