@@ -3,5 +3,14 @@
 // For a full list of overridable settings, and general information on folder-specific settings,
 // see the documentation: https://zed.dev/docs/configuring-zed#settings-files
 {
-  "tab_size": 4,
+    "tab_size": 2,
+    "hard_tabs": false,
+    "languages": {
+        "JSON": {
+            "tab_size": 2,
+        },
+        "Rust": {
+            "tab_size": 4,
+        },
+    },
 }
