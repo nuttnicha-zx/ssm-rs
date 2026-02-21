@@ -38,6 +38,15 @@ fn get_os_name() -> String {
     OS.to_string()
 }
 
+/// Get CPU usage information
+fn get_cpu_usage() -> String {
+    let mut sys = System::new_all();
+    sys.refresh_all();
+
+    let cpu_usage = sys.global_cpu_usage();
+    format!("CPU Usage: {:.0}%", cpu_usage)
+}
+
 /// Get memory usage information
 fn get_memory_usage() -> String {
     let mut sys = System::new_all();
@@ -76,13 +85,10 @@ fn main() {
         // Refresh system information
         sys.refresh_all();
 
-        // Get CPU usage
-        let cpu_usage = sys.global_cpu_usage();
-
         // Print system information
         clear_screen();
         println!("OS: {}", get_os_name());
-        println!("CPU usage: {:.0}%", cpu_usage);
+        println!("CPU usage: {:.0}%", get_cpu_usage());
         println!("Memory: {}", get_memory_usage());
         println!("Swap: {}", get_swap_usage());
 
