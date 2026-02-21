@@ -33,25 +33,46 @@ fn get_os_name() -> String {
     OS.to_string()
 }
 
+// Get memory usage information
+fn get_memory_usage() -> String {
+    let mut sys = System::new_all();
+    sys.refresh_all();
+
+    let total_memory_bytes = sys.total_memory();
+    let used_memory_bytes = sys.used_memory();
+
+    // Calculate memory usage in MB
+    let total_memory = total_memory_bytes / 1024 / 1024;
+    let used_memory = used_memory_bytes / 1024 / 1024;
+
+    format!("Memory Usage: {}/{} MB", used_memory, total_memory)
+}
+
+// Get swap usage information
+fn get_swap_usage() -> String {
+    let mut sys = System::new_all();
+    sys.refresh_all();
+
+    let total_swap_bytes = sys.total_swap();
+    let used_swap_bytes = sys.used_swap();
+
+    // Calculate swap usage in MB
+    let total_swap = total_swap_bytes / 1024 / 1024;
+    let used_swap = used_swap_bytes / 1024 / 1024;
+
+    format!("Swap Usage: {}/{} MB", used_swap, total_swap)
+}
+
 fn main() {
     let mut sys = System::new_all();
 
     // Loop forever
     loop {
+        // Refresh system information
         sys.refresh_all();
 
-        // Get system information
+        // Get CPU usage
         let cpu_usage = sys.global_cpu_usage();
-        let total_memory_bytes = sys.total_memory();
-        let used_memory_bytes = sys.used_memory();
-        let total_swap_bytes = sys.total_swap();
-        let used_swap_bytes = sys.used_swap();
-
-        // Calculate memory and swap usage in MB
-        let total_memory = total_memory_bytes / 1024 / 1024;
-        let used_memory = used_memory_bytes / 1024 / 1024;
-        let total_swap = total_swap_bytes / 1024 / 1024;
-        let used_swap = used_swap_bytes / 1024 / 1024;
 
         // Clear the terminal screen
         print!("\x1B[2J\x1B[1;1H");
@@ -59,8 +80,8 @@ fn main() {
         // Print system information
         println!("OS: {}", get_os_name());
         println!("CPU usage: {:.0}%", cpu_usage);
-        println!("Memory: {} MiB / {} MiB", used_memory, total_memory);
-        println!("Swap: {} MiB / {} MiB", used_swap, total_swap);
+        println!("Memory: {}", get_memory_usage());
+        println!("Swap: {}", get_swap_usage());
 
         // Wait for 1 second before updating again
         sleep(Duration::from_millis(1000));
