@@ -49,19 +49,13 @@ fn get_kernel() -> String {
 }
 
 /// Get CPU usage information
-fn get_cpu_usage() -> String {
-    let mut sys = System::new_all();
-    sys.refresh_all();
-
+fn get_cpu_usage(sys: &System) -> String {
     let cpu_usage = sys.global_cpu_usage();
     format!("CPU Usage: {:.0}%", cpu_usage)
 }
 
 /// Get memory usage information
-fn get_memory_usage() -> String {
-    let mut sys = System::new_all();
-    sys.refresh_all();
-
+fn get_memory_usage(sys: &System) -> String {
     let total_memory_bytes = sys.total_memory();
     let used_memory_bytes = sys.used_memory();
 
@@ -73,10 +67,7 @@ fn get_memory_usage() -> String {
 }
 
 /// Get swap usage information
-fn get_swap_usage() -> String {
-    let mut sys = System::new_all();
-    sys.refresh_all();
-
+fn get_swap_usage(sys: &System) -> String {
     let total_swap_bytes = sys.total_swap();
     let used_swap_bytes = sys.used_swap();
 
@@ -88,20 +79,24 @@ fn get_swap_usage() -> String {
 }
 
 fn main() {
-    let mut sys = System::new_all();
+    let mut system = System::new_all();
 
-    // Loop forever
+    // Get static information
+    let os_name = get_os_name();
+    let kernel = get_kernel();
+
+    // Main loop to refresh and display system information
     loop {
         // Refresh system information
-        sys.refresh_all();
+        system.refresh_all();
 
         // Print system information
         clear_screen();
-        println!("OS: {}", get_os_name());
-        println!("Kernel: {}", get_kernel());
-        println!("CPU usage: {}", get_cpu_usage());
-        println!("Memory: {}", get_memory_usage());
-        println!("Swap: {}", get_swap_usage());
+        println!("OS: {}", os_name);
+        println!("Kernel: {}", kernel);
+        println!("CPU usage: {}", get_cpu_usage(&system));
+        println!("Memory: {}", get_memory_usage(&system));
+        println!("Swap: {}", get_swap_usage(&system));
 
         // Wait for 1 second before updating again
         sleep(Duration::from_millis(1000));
