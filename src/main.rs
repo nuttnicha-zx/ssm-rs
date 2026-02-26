@@ -62,7 +62,7 @@ fn main() {
             TextColor::Reset,
         );
         println!(
-            "{}Memory{}:{} {}{}/{}{} MB {}({}{}{}){}",
+            "{}Memory{}:{} {}{}/{}{} GB {}({}{}{}){}",
             TextColor::Blue,
             TextColor::Gray,
             TextColor::Reset,
@@ -77,7 +77,7 @@ fn main() {
             TextColor::Reset,
         );
         println!(
-            "  {}Swap{}:{} {}{}/{}{} MB {}({}{}{}){}",
+            "  {}Swap{}:{} {}{}/{}{} GB {}({}{}{}){}",
             TextColor::Blue,
             TextColor::Gray,
             TextColor::Reset,
