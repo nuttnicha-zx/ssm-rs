@@ -51,31 +51,45 @@ fn get_kernel() -> String {
 /// Get CPU usage information
 fn get_cpu_usage(sys: &System) -> String {
     let cpu_usage = sys.global_cpu_usage();
-    format!("CPU Usage: {:.0}%", cpu_usage)
+    format!("{:.0}%", cpu_usage)
 }
 
 /// Get memory usage information
-fn get_memory_usage(sys: &System) -> String {
+fn get_memory_usage(sys: &System) -> (String, String, String) {
     let total_memory_bytes = sys.total_memory();
     let used_memory_bytes = sys.used_memory();
 
     // Calculate memory usage in MB
     let total_memory = total_memory_bytes / 1024 / 1024;
     let used_memory = used_memory_bytes / 1024 / 1024;
+    let memory_usage_percentage = (used_memory as f64 / total_memory as f64) * 100.0;
 
-    format!("Memory Usage: {}/{} MB", used_memory, total_memory)
+    (
+        format!("{}", used_memory),
+        format!("{}", total_memory),
+        format!("{:.2}%", memory_usage_percentage),
+    )
 }
 
 /// Get swap usage information
-fn get_swap_usage(sys: &System) -> String {
+fn get_swap_usage(sys: &System) -> (String, String, String) {
     let total_swap_bytes = sys.total_swap();
     let used_swap_bytes = sys.used_swap();
 
     // Calculate swap usage in MB
     let total_swap = total_swap_bytes / 1024 / 1024;
     let used_swap = used_swap_bytes / 1024 / 1024;
+    let swap_usage_percentage = if total_swap > 0 {
+        (used_swap as f64 / total_swap as f64) * 100.0
+    } else {
+        0.0
+    };
 
-    format!("Swap Usage: {}/{} MB", used_swap, total_swap)
+    (
+        format!("{}", used_swap),
+        format!("{}", total_swap),
+        format!("{:.2}%", swap_usage_percentage),
+    )
 }
 
 fn main() {
@@ -90,13 +104,20 @@ fn main() {
         // Refresh system information
         system.refresh_all();
 
+        let cpu_usage = get_cpu_usage(&system);
+        let (used_memory, total_memory, memory_usage) = get_memory_usage(&system);
+        let (used_swap, total_swap, swap_usage) = get_swap_usage(&system);
+
         // Print system information
         clear_screen();
-        println!("OS: {}", os_name);
+        println!("    OS: {}", os_name);
         println!("Kernel: {}", kernel);
-        println!("CPU usage: {}", get_cpu_usage(&system));
-        println!("Memory: {}", get_memory_usage(&system));
-        println!("Swap: {}", get_swap_usage(&system));
+        println!("   CPU: {}", cpu_usage);
+        println!(
+            "Memory: {}/{} MB ({})",
+            used_memory, total_memory, memory_usage
+        );
+        println!("  Swap: {}/{} MB ({})", used_swap, total_swap, swap_usage);
 
         // Wait for 1 second before updating again
         sleep(Duration::from_millis(1000));
