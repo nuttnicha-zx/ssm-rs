@@ -2,6 +2,7 @@ mod os;
 mod system;
 mod ui;
 
+use std::process::exit;
 use std::thread::sleep;
 use std::time::Duration;
 use sysinfo::System;
@@ -14,6 +15,14 @@ fn main() {
     // Get static information
     let os_name = os::get_os_name();
     let kernel = os::get_kernel();
+
+    ui::hide_cursor();
+
+    ctrlc::set_handler(move || {
+        ui::show_cursor();
+        exit(0);
+    })
+    .expect("Error setting Ctrl-C handler");
 
     // Main loop to refresh and display system information
     loop {

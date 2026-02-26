@@ -5,6 +5,16 @@ pub fn clear_screen() {
     print!("\x1B[2J\x1B[1;1H");
 }
 
+/// Hide terminal cursor
+pub fn hide_cursor() {
+    print!("\x1B[?25l");
+}
+
+/// Show terminal cursor
+pub fn show_cursor() {
+    print!("\x1B[?25h");
+}
+
 /// Text Color for terminal output
 pub enum TextColor {
     Red,
