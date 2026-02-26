@@ -49,9 +49,16 @@ fn get_kernel() -> String {
 }
 
 /// Get CPU usage information
-fn get_cpu_usage(sys: &System) -> String {
+fn get_cpu_usage(sys: &System) -> (String, String) {
     let cpu_usage = sys.global_cpu_usage();
-    format!("{:.0}%", cpu_usage)
+    let cpu_clocks_mhz =
+        sys.cpus().iter().map(|cpu| cpu.frequency()).sum::<u64>() / sys.cpus().len() as u64;
+    let cpu_clocks_ghz = cpu_clocks_mhz as f64 / 1000.0;
+
+    (
+        format!("{:.1}%", cpu_usage),
+        format!("{:.1} GHz", cpu_clocks_ghz),
+    )
 }
 
 /// Get memory usage information
@@ -67,7 +74,7 @@ fn get_memory_usage(sys: &System) -> (String, String, String) {
     (
         format!("{}", used_memory),
         format!("{}", total_memory),
-        format!("{:.2}%", memory_usage_percentage),
+        format!("{:.1}%", memory_usage_percentage),
     )
 }
 
@@ -88,7 +95,7 @@ fn get_swap_usage(sys: &System) -> (String, String, String) {
     (
         format!("{}", used_swap),
         format!("{}", total_swap),
-        format!("{:.2}%", swap_usage_percentage),
+        format!("{:.1}%", swap_usage_percentage),
     )
 }
 
@@ -104,7 +111,7 @@ fn main() {
         // Refresh system information
         system.refresh_all();
 
-        let cpu_usage = get_cpu_usage(&system);
+        let (cpu_usage, cpu_clocks) = get_cpu_usage(&system);
         let (used_memory, total_memory, memory_usage) = get_memory_usage(&system);
         let (used_swap, total_swap, swap_usage) = get_swap_usage(&system);
 
@@ -112,7 +119,7 @@ fn main() {
         clear_screen();
         println!("    OS: {}", os_name);
         println!("Kernel: {}", kernel);
-        println!("   CPU: {}", cpu_usage);
+        println!("   CPU: {} ({})", cpu_usage, cpu_clocks);
         println!(
             "Memory: {}/{} MB ({})",
             used_memory, total_memory, memory_usage
