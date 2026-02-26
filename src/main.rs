@@ -29,57 +29,57 @@ fn main() {
         println!(
             "    {}OS{}:{} {}",
             TextColor::Blue,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             os_name
         );
         println!(
             "{}Kernel{}:{} {}",
             TextColor::Blue,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             kernel
         );
         println!(
             "   {}CPU{}:{} {} {}({}{}{}){}",
             TextColor::Blue,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             cpu_usage,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             cpu_clocks,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
         );
         println!(
             "{}Memory{}:{} {}{}/{}{} MB {}({}{}{}){}",
             TextColor::Blue,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             used_memory,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             total_memory,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             memory_usage,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
         );
         println!(
             "  {}Swap{}:{} {}{}/{}{} MB {}({}{}{}){}",
             TextColor::Blue,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             used_swap,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             total_swap,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
             swap_usage,
-            TextColor::White,
+            TextColor::Gray,
             TextColor::Reset,
         );
 

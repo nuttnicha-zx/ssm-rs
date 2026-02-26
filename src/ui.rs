@@ -14,6 +14,7 @@ pub enum TextColor {
     Magenta,
     Cyan,
     White,
+    Gray,
     Reset,
 }
 
@@ -28,6 +29,7 @@ impl Display for TextColor {
             TextColor::Magenta => "\x1B[35m",
             TextColor::Cyan => "\x1B[36m",
             TextColor::White => "\x1B[37m",
+            TextColor::Gray => "\x1B[90m",
             TextColor::Reset => "\x1B[0m",
         };
         write!(f, "{}", color_code)
