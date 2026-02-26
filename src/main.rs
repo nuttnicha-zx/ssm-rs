@@ -38,6 +38,16 @@ fn get_os_name() -> String {
     OS.to_string()
 }
 
+/// Get the kernel version
+fn get_kernel() -> String {
+    if let Ok(content) = fs::read_to_string("/proc/version") {
+        if let Some(kernel_version) = content.split_whitespace().nth(2) {
+            return kernel_version.to_string();
+        }
+    }
+    "Unknown".to_string()
+}
+
 /// Get CPU usage information
 fn get_cpu_usage() -> String {
     let mut sys = System::new_all();
@@ -88,7 +98,8 @@ fn main() {
         // Print system information
         clear_screen();
         println!("OS: {}", get_os_name());
-        println!("CPU usage: {:.0}%", get_cpu_usage());
+        println!("Kernel: {}", get_kernel());
+        println!("CPU usage: {}", get_cpu_usage());
         println!("Memory: {}", get_memory_usage());
         println!("Swap: {}", get_swap_usage());
 
