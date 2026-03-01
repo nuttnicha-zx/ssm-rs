@@ -16,6 +16,7 @@ pub fn show_cursor() {
 }
 
 /// Text Color for terminal output
+#[allow(unused)]
 pub enum TextColor {
     Red,
     Green,
