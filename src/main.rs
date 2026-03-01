@@ -7,7 +7,7 @@ use std::thread::sleep;
 use std::time::Duration;
 use sysinfo::System;
 
-use crate::ui::TextColor;
+use ui::TextColor as C;
 
 fn main() {
     let mut system_info = System::new_all();
@@ -35,64 +35,52 @@ fn main() {
 
         // Print system information
         ui::clear_screen();
-        println!(
-            "    {}OS{}:{} {}",
-            TextColor::Blue,
-            TextColor::Gray,
-            TextColor::Reset,
-            os_name
-        );
-        println!(
-            "{}Kernel{}:{} {}",
-            TextColor::Blue,
-            TextColor::Gray,
-            TextColor::Reset,
-            kernel
-        );
+        println!("    {}OS{}:{} {}", C::Blue, C::Gray, C::Reset, os_name);
+        println!("{}Kernel{}:{} {}", C::Blue, C::Gray, C::Reset, kernel);
         println!(
             "   {}CPU{}:{} {} {}({}{}{}){}",
-            TextColor::Blue,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Blue,
+            C::Gray,
+            C::Reset,
             cpu_usage,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Gray,
+            C::Reset,
             cpu_clocks,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Gray,
+            C::Reset,
         );
         println!(
             "{}Memory{}:{} {}{}/{}{} GB {}({}{}{}){}",
-            TextColor::Blue,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Blue,
+            C::Gray,
+            C::Reset,
             used_memory,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Gray,
+            C::Reset,
             total_memory,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Gray,
+            C::Reset,
             memory_usage,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Gray,
+            C::Reset,
         );
         println!(
             "  {}Swap{}:{} {}{}/{}{} GB {}({}{}{}){}",
-            TextColor::Blue,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Blue,
+            C::Gray,
+            C::Reset,
             used_swap,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Gray,
+            C::Reset,
             total_swap,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Gray,
+            C::Reset,
             swap_usage,
-            TextColor::Gray,
-            TextColor::Reset,
+            C::Gray,
+            C::Reset,
         );
 
         // Wait for 1 second before updating again
-        sleep(Duration::from_millis(1000));
+        sleep(Duration::from_secs(1));
     }
 }
